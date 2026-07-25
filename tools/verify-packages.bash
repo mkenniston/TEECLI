@@ -19,8 +19,8 @@ PYTHON_TOOLS="python ruff"
 JAVASCRIPT_TOOLS=node
 JAVA_TOOLS="java javac"
 C_TOOLS=gcc
-CPLUSPLUS_TOOLS=cpp
-CSHARP_TOOLS=dotnet
+C_PLUS_PLUS_TOOLS=cpp
+C_SHARP_TOOLS=dotnet
 
 FAILS=0
 for TOOL in \
@@ -30,8 +30,8 @@ for TOOL in \
 	$JAVASCRIPT_TOOLS	\
 	$JAVA_TOOLS		\
 	$C_TOOLS		\
-	$CPLUSPLUS_TOOLS	\
-	$CSHARP_TOOLS		
+	$C_PLUS_PLUS_TOOLS	\
+	$C_SHARP_TOOLS		
 do
   if RES=$(command -v "$TOOL"); then
     echo "found $RES"
