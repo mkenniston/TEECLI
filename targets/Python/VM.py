@@ -5,5 +5,5 @@
 class VM:
 
   def execute(self, expr, env):
-    print(expr.expr_eval(env).expr_str())
+    print(expr.vm_eval(env).vm_str())
 

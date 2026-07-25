@@ -4,7 +4,7 @@
 # to expressions.
 
 import sys
-from Expressions import AtomNil, AtomInt, AtomFloat, AtomStr, AtomSym, Pair
+from VM_Types import VM_Nil, VM_Int, VM_Float, VM_Str, VM_Sym, VM_Pair
 
 class Reader:
 
@@ -55,10 +55,10 @@ class Reader:
           raise Exception("no pair to push")
         right = stack.pop()
         left = stack.pop()
-        stack.append(Pair(left, right))
+        stack.append(VM_Pair(left, right))
         continue
       if token == "N":
-        stack.append(AtomNil())
+        stack.append(VM_Nil())
         continue
 
       value = self.read_one_token()
@@ -66,12 +66,12 @@ class Reader:
         raise Exception("no value")
 
       if token == "I":
-        stack.append(AtomInt(int(value)))
+        stack.append(VM_Int(int(value)))
       elif token == "F":
-        stack.append(AtomFloat(float(value)))
+        stack.append(VM_Float(float(value)))
       elif token == "S":
-        stack.append(AtomStr(value))
+        stack.append(VM_Str(value))
       elif token == "Y":
         sid = self._symbol_table.get(value).sid()
-        stack.append(AtomSym(value, sid))
+        stack.append(VM_Sym(value, sid))
 

@@ -51,4 +51,5 @@ DONE:
 - added first part of eval() implementation
 - renamed *.tee to *.ebs
 - renamed Executer to VM
+- renamed all the Expression stuff to use "VM" instead
 

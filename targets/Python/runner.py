@@ -7,7 +7,7 @@
 from Reader import Reader
 from VM import VM
 from SymbolTable import SymbolTable
-from Expressions import AtomFloat
+from VM_Types import VM_Float
 from Environment import Environment
 
 def main():
@@ -18,7 +18,7 @@ def main():
 
   # FIX ME
   pi_sym = symbol_table.get("pi")
-  pi_val = AtomFloat(3.14159)
+  pi_val = VM_Float(3.14159)
   global_env.set(pi_sym, pi_val)
 
   expr = reader.read_one_expr()
