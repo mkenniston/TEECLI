@@ -3,7 +3,7 @@
 if ! ruff check; then
   exit 1
 fi
-cat tools/runtimes.tee tools/framework.tee \
+cat tools/runtimes.ebs tools/framework.ebs \
     | racket -t tools/compiler.rkt \
     | targets/Python/runner.py
 

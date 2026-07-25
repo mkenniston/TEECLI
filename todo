@@ -1,14 +1,11 @@
 	TODO (Tasks)
 
-- rename *.tee to *.ebs
+- implement functions in eval() -- dispatcher
 
 - continue w/ Design Philo and Architecture sections of the Manual
 ? change targets/ dir to vm/
 	and ? create a sut/ dir for what gets run (including TEECLI itself)
 
-- put a hashtable in Executer
-- put a dispatch mechanism in Executer
-- figure out how to implement lexical scoping
 - figure out how exceptions/call/cc works
 - figure out how to implement ffi
 - learn to do objects in Racket
@@ -21,9 +18,11 @@
 	Python, Java, Javascript
 	C, C++, C# (.NET)
 	Racket, Rust, Go
-	Perl, R, Ruby, PHP
+	Perl, Ruby
+ 	R, PHP
 	Swift, Pascal/Delphi, Visual Basic (.NET), Fortran, Ada
 - someday add Windows support, maybe using "mono" (Visual Basic, etc.)
+- add whitepapers (2) to github/chronian
 
 - Chronian: look at MATLAB (via Java binding) for how they do datetimes
 
@@ -45,3 +44,7 @@ DONE:
 - moved title/subtitle/tagline into the new main doc file
 - started the master "TEECLI Manual"
 - added more toolchain to verify-packages script
+- added code to do lexical scoping
+- added first part of eval() implementation
+- renamed *.tee to *.ebs
+
