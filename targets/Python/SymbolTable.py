@@ -3,7 +3,7 @@
 # Implement a Symbol Table, which contains only the name and sid of
 # each symbol.
 
-from Expression import AtomSym
+from Expressions import AtomSym
 
 class SymbolTable:
 

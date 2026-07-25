@@ -1,5 +1,7 @@
 	TODO (Tasks)
 
+- rename *.tee to *.ebs
+
 - continue w/ Design Philo and Architecture sections of the Manual
 ? change targets/ dir to vm/
 	and ? create a sut/ dir for what gets run (including TEECLI itself)

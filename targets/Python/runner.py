@@ -7,15 +7,23 @@
 from Reader import Reader
 from Executer import Executer
 from SymbolTable import SymbolTable
+from Expressions import AtomFloat
+from Environment import Environment
 
 def main():
   symbol_table = SymbolTable()
   reader = Reader(symbol_table)
   executer = Executer()
+  global_env = Environment()
+
+  # FIX ME
+  pi_sym = symbol_table.get("pi")
+  pi_val = AtomFloat(3.14159)
+  global_env.set(pi_sym, pi_val)
 
   expr = reader.read_one_expr()
   while expr:
-    executer.execute(expr)
+    executer.execute(expr, global_env)
     expr = reader.read_one_expr()
 
 if __name__ == "__main__":
