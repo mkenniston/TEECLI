@@ -4,9 +4,12 @@
 # to expressions.
 
 import sys
-from SE import AtomNil, AtomInt, AtomFloat, AtomStr, AtomSym, Pair
+from Expression import AtomNil, AtomInt, AtomFloat, AtomStr, AtomSym, Pair
 
 class Reader:
+
+  def __init__(self, stable):
+    self._symbol_table = stable
 
   def is_white_space(self, c):
     return c in " \t\n\r\v"
@@ -69,5 +72,6 @@ class Reader:
       elif token == "S":
         stack.append(AtomStr(value))
       elif token == "Y":
-        stack.append(AtomSym(value))
+        sid = self._symbol_table.get(value)._sid()
+        stack.append(AtomSym(value, sid))
 

@@ -2,10 +2,11 @@
 
 # Define a class for S-Expressions, and for each type of expression.
 
-class SE:
-  pass
+class Expression:
+  def __eval__(self, env):
+    return self
 
-class Pair(SE):
+class Pair(Expression):
 
   def __init__(self, left, right):
     self._left = left
@@ -22,7 +23,7 @@ class Pair(SE):
       return " " + str(tail._left) + tail.tail_str()
     return " . " + str(tail) + " )"
 
-class Atom(SE):
+class Atom(Expression):
 
   def __init__(self, value):
     self._value = value
@@ -53,6 +54,14 @@ class AtomStr(Atom):
     return '"%s"' % self._value
 
 class AtomSym(Atom):
+  def __init__(self, name, sid):
+    Atom.__init__(self, name)
+    self._sid = sid
+    # print("ctor AtomSym %s %d" % (self._value, self._sid))
+
+  def sid(self):
+    return self._sid
+  
   def __str__(self):
-    return '%s' % self._value
+    return '%s/%d' % (self._value, self._sid)
 

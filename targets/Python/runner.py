@@ -6,9 +6,11 @@
  
 from Reader import Reader
 from Executer import Executer
+from SymbolTable import SymbolTable
 
 def main():
-  reader = Reader()
+  symbol_table = SymbolTable()
+  reader = Reader(symbol_table)
   executer = Executer()
 
   expr = reader.read_one_expr()
