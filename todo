@@ -11,8 +11,11 @@
 - learn to do objects in Racket
 
 - look up exact atom lexical rules, make ESE conform to them
-- implement javascript reader/executer
-- implement c reader/executer
+- implement javascript VM
+- implement c VM
+
+- add runtimes for (display, eval, quote, cons, car, left, cdr, right, define)
+- add macros/forms, to enable simple framework coding
 
 - continue adding languages from wishlist:
 	Python, Java, Javascript
@@ -47,4 +50,5 @@ DONE:
 - added code to do lexical scoping
 - added first part of eval() implementation
 - renamed *.tee to *.ebs
+- renamed Executer to VM
 

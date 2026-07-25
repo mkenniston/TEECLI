@@ -5,7 +5,7 @@
 # machine to read than the original human-readable s-expressions.
  
 from Reader import Reader
-from Executer import Executer
+from VM import VM
 from SymbolTable import SymbolTable
 from Expressions import AtomFloat
 from Environment import Environment
@@ -13,7 +13,7 @@ from Environment import Environment
 def main():
   symbol_table = SymbolTable()
   reader = Reader(symbol_table)
-  executer = Executer()
+  vm = VM()
   global_env = Environment()
 
   # FIX ME
@@ -23,7 +23,7 @@ def main():
 
   expr = reader.read_one_expr()
   while expr:
-    executer.execute(expr, global_env)
+    vm.execute(expr, global_env)
     expr = reader.read_one_expr()
 
 if __name__ == "__main__":
