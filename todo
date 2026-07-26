@@ -1,12 +1,35 @@
 	TODO (Tasks)
 
-- add (eval), (display) to builtins
+- add (eval), (display exp ...) to builtins
+- add (define sym ex) (if cond ex1 ex2) (if cond ex)
+- add (/ ...) variadic, (expt base exponent)
+- add > < <= >= = (all variadic)
+- add (not exp) (and ...) (or ...)
+- add (max ...) (min ...) (abs exp)
+- add (append item list)
+- add (car exp) (cdr exp) (cons exp exp)
+- add (begin ) (let ) (list )
+- add (eq? ...) (equal? ..)
+- add (number? ) (symbol? ) (string? ) (boolean? ) (null? )
+- add (string-xxx ) whole family of methods
+- add (lambda )
+- add formatting for output (at the string level)
+
 - continue w/ Design Philo and Architecture sections of the Manual
 - FAQ: can I use ffi in my own code - yes you can, TEECLI explicitly does not
 	require the use of ffi, but it also does not prohibit it
 ? change targets/ dir to vm/
 	and ? create a sut/ dir for what gets run (including TEECLI itself)
+- FAQ: How can I help?  lots of ways, proofreading/reviewing the doc,
+	spreading the word, inspecting code (even in just one language),
+	testing on different Linux releases, using TEECLI and providing
+	feedback and suggestions --- *not* necessary to know all
+	the target languages
+- FAQ: what aobout I/o?
+- FAQ: what if have more than a library, e.g. a whole framework? Can I
+	still use TEECLI for that?
 
+- add "make" where appropriate, and add to tool-chain (verify)
 - figure out how exceptions/call/cc works
 - figure out how to implement ffi
 - learn to do objects in Racket
@@ -54,4 +77,5 @@ DONE:
 - renamed Executer to VM
 - renamed all the Expression stuff to use "VM" instead
 - added the dispatcher for functions and macros, plus some builtins
+- added newline in .ese output from compiler, to make it easier to debug
 

@@ -24,5 +24,5 @@
 
 (for ([expr (in-producer read eof)])
   (display-ese expr)
-  (display " E"))
+  (display " E\n"))
 (display "\n")
