@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+# TEECLI - Test Execution Environment for Cross-Language Implementations
+# Copyright (c) 2026 Michael S. Kenniston
+# Open-source licensed under LGPL 2.1.  See the LICENSE file for details.
+
 # This function populates all the built-in functions and values.
 
 from VM_Types import VM_Bool, VM_Int, VM_Real, VM_Macro, VM_Function

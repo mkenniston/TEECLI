@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# TEECLI - Test Execution Environment for Cross-Language Implementations
+# Copyright (c) 2026 Michael S. Kenniston
+# Open-source licensed under LGPL 2.1.  See the LICENSE file for details.
+
 # This script verifies that all commands are installed that are
 # required to run all the self-tests for all the target languages
 # supported by TEECLI.  You only need to run this script once,

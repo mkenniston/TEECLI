@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+# TEECLI - Test Execution Environment for Cross-Language Implementations
+# Copyright (c) 2026 Michael S. Kenniston
+# Open-source licensed under LGPL 2.1.  See the LICENSE file for details.
+
 # This is a skeleton program to read ESE (encoded s-expression) data
 # and create the actual s-expressions.  ESE is much easier for a
 # machine to read than the original human-readable s-expressions.

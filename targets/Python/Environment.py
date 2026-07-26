@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+# TEECLI - Test Execution Environment for Cross-Language Implementations
+# Copyright (c) 2026 Michael S. Kenniston
+# Open-source licensed under LGPL 2.1.  See the LICENSE file for details.
 # Environments match values with variables (symbols), using lexical scoping.
 
 class Environment:
