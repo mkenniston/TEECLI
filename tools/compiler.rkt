@@ -14,7 +14,7 @@
     [(string? expr) (display " S ") (display (escape-whitespace expr))]
     [(symbol? expr) (display " Y ") (display (escape-whitespace expr))]
     [(exact-integer? expr) (display " I ") (display expr)]
-    [(flonum? expr) (display " F ") (display expr)]
+    [(flonum? expr) (display " R ") (display expr)]
     [(boolean? expr) (display " B ") (display expr)]
     [(pair? expr) (display-ese (car expr))
                    (display-ese (cdr expr))

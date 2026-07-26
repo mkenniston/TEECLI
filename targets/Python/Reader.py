@@ -4,7 +4,7 @@
 # to expressions.
 
 import sys
-from VM_Types import VM_Nil, VM_Int, VM_Float, VM_Str, VM_Sym, VM_Pair
+from VM_Types import VM_Nil, VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Pair
 
 class Reader:
 
@@ -65,10 +65,12 @@ class Reader:
       if not value:
         raise Exception("no value")
 
+      if token == "B":
+        stack.append(VM_Bool(value == "#t"))
       if token == "I":
         stack.append(VM_Int(int(value)))
-      elif token == "F":
-        stack.append(VM_Float(float(value)))
+      elif token == "R":
+        stack.append(VM_Real(float(value)))
       elif token == "S":
         stack.append(VM_Str(value))
       elif token == "Y":

@@ -1,8 +1,9 @@
 	TODO (Tasks)
 
-- implement functions in eval() -- dispatcher
-
+- add (eval), (display) to builtins
 - continue w/ Design Philo and Architecture sections of the Manual
+- FAQ: can I use ffi in my own code - yes you can, TEECLI explicitly does not
+	require the use of ffi, but it also does not prohibit it
 ? change targets/ dir to vm/
 	and ? create a sut/ dir for what gets run (including TEECLI itself)
 
@@ -52,4 +53,5 @@ DONE:
 - renamed *.tee to *.ebs
 - renamed Executer to VM
 - renamed all the Expression stuff to use "VM" instead
+- added the dispatcher for functions and macros, plus some builtins
 

@@ -1,5 +1,17 @@
 "xyzzy"
+#f #t
+True False 
 pi
+(+)
+(+ 7)
 (+ 4  5)
-(a 'b (d . e))
+(+ 100 50 7)
+(set! a quote)
+a
+(quote 23)
+(quote x)
+(set! b "banana")
+(set! d "dates")
+(set! e "eggplant")
+'(a b (d . e))
 

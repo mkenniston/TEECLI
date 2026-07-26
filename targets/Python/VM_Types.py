@@ -5,28 +5,20 @@
 # Each VM type has three required methods: vm_type, vm_str, vm_eval
 # We deliberately do not use inheritance here, in order to make it easier
 # to port this code to non-OO languages.
-
-class VM_Pair():
-  def __init__(self, left, right):
-    self._left = left
-    self._right = right
-
-  def vm_type(self):
-    return 'P'
-
-  def vm_str(self):
-    return "( " + self._left.vm_str() + self._tail_str()
-
-  def _tail_str(self):
-    tail = self._right
-    if isinstance(tail, VM_Nil):
-      return " )"
-    if isinstance(tail, VM_Pair):
-      return " " + tail._left.vm_str() + tail._tail_str()
-    return " . " + tail.vm_str() + " )"
-
-  def vm_eval(self, env):
-    return self  # FIX ME
+#
+# The VM Types are:
+#
+#	B: Boolean
+#	E: not a type, but reserved for use by ESE
+#	F: Function (args are pre-evaluated)
+#	I: Integer
+#	N: Nil
+#	M: Macro (args are not pre-evaluated)
+#	P: Pair
+#	R: Real number (Floating point)
+#	S: String
+#	Y: sYmbol
+#
 
 class VM_Nil():
 
@@ -38,6 +30,25 @@ class VM_Nil():
 
   def vm_str(self):
     return "()"
+
+  def vm_eval(self, env):
+    return self
+
+class VM_Bool():
+
+  def __init__(self, value):
+    if not isinstance(value, bool):
+      raise Exception('%s is not bool' % value)
+    self._bool_val = ("#t" if value else "#f")
+
+  def bool_val(self):
+    return self._bool_val
+
+  def vm_type(self):
+    return 'B'
+
+  def vm_str(self):
+    return str(self._bool_val)
 
   def vm_eval(self, env):
     return self
@@ -61,21 +72,21 @@ class VM_Int():
   def vm_eval(self, env):
     return self
 
-class VM_Float():
+class VM_Real():
 
   def __init__(self, value):
     if not isinstance(value, float):
       raise Exception('%s is not float' % value)
-    self._float_val = value
+    self._real_val = value
 
   def vm_type(self):
-    return 'F'
+    return 'R'
 
-  def float_val(self):
-    return self._float_val
+  def real_val(self):
+    return self._real_val
 
   def vm_str(self):
-    return str(self._float_val)
+    return str(self._real_val)
 
   def vm_eval(self, env):
     return self
@@ -115,4 +126,80 @@ class VM_Sym():
 
   def vm_eval(self, env):
     return env.get(self)
+
+class VM_Pair():
+  def __init__(self, left, right):
+    self._left = left
+    self._right = right
+
+  def left(self):
+    return self._left
+
+  def right(self):
+    return self._right
+
+  def vm_type(self):
+    return 'P'
+
+  def vm_str(self):
+    return "( " + self._left.vm_str() + self._tail_str()
+
+  def _tail_str(self):
+    tail = self._right
+    if isinstance(tail, VM_Nil):
+      return " )"
+    if isinstance(tail, VM_Pair):
+      return " " + tail._left.vm_str() + tail._tail_str()
+    return " . " + tail.vm_str() + " )"
+
+  def vm_eval(self, env):
+    action = self._left.vm_eval(env)
+    if action.vm_type() == 'M':
+      args = self._right
+      return action.macro()(args, env)
+    if action.vm_type() == 'F':
+      args = self._eval_list(self._right, env)
+      return action.function()(args, env)
+    raise Exception("not executable: %s" % action.vm_str())
+
+  def _eval_list(self, tail, env):
+    if tail.vm_type() == 'N':
+      return tail
+    if tail.vm_type() == 'P':
+      return VM_Pair(tail.left().vm_eval(env), tail._eval_list(tail.right(), env))
+    raise Exception("arg list is not a list")
+
+class VM_Macro():
+
+  def __init__(self, macro):
+    self._macro = macro
+
+  def macro(self):
+    return self._macro
+
+  def vm_type(self):
+    return 'M'
+
+  def vm_str(self):
+    return str(self._macro)
+
+  def vm_eval(self, args, env):
+    raise Exception("cannot eval a bare macro without args")
+
+class VM_Function():
+
+  def __init__(self, function):
+    self._function = function
+
+  def function(self):
+    return self._function
+
+  def vm_type(self):
+    return 'F'
+
+  def vm_str(self):
+    return str(self._function)
+
+  def vm_eval(self, args, env):
+    raise Exception("cannot eval a bare function without args")
 
