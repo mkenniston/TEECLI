@@ -5,11 +5,11 @@
 # Open-source licensed under LGPL 2.1.  See the LICENSE file for details.
 
 if [ $# -ne 1 ]; then
-  echo "usage: $0 <target>"
+  echo "usage: $0 <vm>"
   exit 1
 fi
 
-TARGET=$1
-echo "running: $TARGET"
-./targets/"$TARGET"/run.bash
+VM=$1
+echo "running: $VM"
+./vms/"$VM"/run.bash
 

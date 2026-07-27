@@ -1,3 +1,21 @@
-	TEECLI (Pronounced TICK-lee)
-	Test Execution Environment for MUltiple Target Languages
+TEECLI
+Test Execution Environment for Cross-Language Implementations
+Executable specifications for cross-language parity.
+One specification. One test suite. Many implementations.
+
+TEECLI (pronounced TEAK-lee) is a framework for using a single suite of
+executable specifications to verify the behavioral parity of multiple
+implementations of a library in different languages.  Any natural
+language description of the desired behavior is considered to be only an
+aid and explanation, and we assume that the automated test suite is the
+formal specification.  By using small VMs to make this specification
+executable across multiple languages, rigorous conformance testing of
+every implementation is possible using only a single common test suite,
+and there is no room for differing interpretations of the specification.
+The architecture is modular so that additional languages may be added,
+and a library need not be modified to be tested.  TEECLI is open-sourced
+under the LGPL, is available on https://github.com/mkenniston/TEECLI,
+and runs under Linux.
+
+For more detailed information, refer to the TEECLI manual.
 

@@ -8,8 +8,8 @@ if ! shellcheck ./*.bash ./*/*.bash ./*/*/*.bash; then
   exit 1
 fi
 
-ALL_TARGETS=$(ls targets)
-for TARGET in $ALL_TARGETS; do
-  ./run_one.bash "$TARGET"
+ALL_VMS=$(ls vms)
+for VM in $ALL_VMS; do
+  ./run_one.bash "$VM"
 done
 

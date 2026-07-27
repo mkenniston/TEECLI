@@ -1,8 +1,10 @@
 	TODO (Tasks)
 
-- doc: clean up "ffi" vs. "adapter" terminology
+- doc: clean up "ffi" vs. "adapter" terminology (in doc for now)
 - add (eval), (display exp ...) to builtins
+- add (lambda )
 - add (define sym ex) (if cond ex1 ex2) (if cond ex)
+
 - add (/ ...) variadic, (expt base exponent)
 - add > < <= >= = (all variadic)
 - add (not exp) (and ...) (or ...)
@@ -13,18 +15,20 @@
 - add (eq? ...) (equal? ..)
 - add (number? ) (symbol? ) (string? ) (boolean? ) (null? )
 - add (string-xxx ) whole family of methods
-- add (lambda )
 - add formatting for output (at the string level)
+- add adapter code for Python
 
+- make sure everything works with Unicode/UTF-8
 - research the most accepted/popular styles for each target language,
 	and set the flags appropriately on the de-linters
-- continue w/ Design Philo and Architecture sections of the Manual
-? change targets/ dir to vm/
-	and ? create a sut/ dir for what gets run (including TEECLI itself)
+- continue w/Architecture section of the Manual
+- figure out how to cleanly separate the TEECLI code for each VM, the
+	language-specific adapters for each SUT, and the EBS test suites
+	(including TEECLI self-tests)
 
 - add "make" where appropriate, and add to tool-chain (verify)
 - figure out how exceptions/call/cc works
-- figure out how to implement ffi
+- figure out how to implement adapters
 - learn to do objects in Racket
 
 - look up exact atom lexical rules, make ESE conform to them
@@ -74,4 +78,5 @@ DONE:
 - added copyright/license block to every source file (and the Manual)
 - added more material to the Manual
 - cleaned up names, changed VM to VirtualMachine
+- changed targets/ to vms/
 
