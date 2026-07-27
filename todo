@@ -1,21 +1,27 @@
 	TODO (Tasks)
 
-- doc: clean up "ffi" vs. "adapter" terminology (in doc for now)
+- add (if cond ex1 ex2) (if cond ex)
+- add (define sym ex)
+- add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
+
 - add (eval), (display exp ...) to builtins
 - add (lambda )
-- add (define sym ex) (if cond ex1 ex2) (if cond ex)
 
+- add (define-variadic new-name old-name empty-val)
+	e.g. (define-variadic '+ 'op-plus 0)
 - add (/ ...) variadic, (expt base exponent)
 - add > < <= >= = (all variadic)
-- add (not exp) (and ...) (or ...)
+- add (not exp)
+- add (and ...) (or ...) variadic macro w/ short-circuit eval
 - add (max ...) (min ...) (abs exp)
-- add (append item list)
+- add (append item list) (prepend item list)
 - add (car exp) (cdr exp) (cons exp exp)
 - add (begin ) (let ) (list )
-- add (eq? ...) (equal? ..)
-- add (number? ) (symbol? ) (string? ) (boolean? ) (null? )
+- add (eq? ...) (equal? ..) variadic
 - add (string-xxx ) whole family of methods
 - add formatting for output (at the string level)
+
+- doc: clean up "ffi" vs. "adapter" terminology (in doc for now)
 - add adapter code for Python
 
 - make sure everything works with Unicode/UTF-8
@@ -79,4 +85,5 @@ DONE:
 - added more material to the Manual
 - cleaned up names, changed VM to VirtualMachine
 - changed targets/ to vms/
+- added (vm-type)
 

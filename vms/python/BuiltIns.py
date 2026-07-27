@@ -6,7 +6,7 @@
 
 # This function populates all the built-in functions and values.
 
-from VMTypes import VM_Bool, VM_Int, VM_Real, VM_Macro, VM_Function
+from VMTypes import VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Macro, VM_Function
 from Environment import Environment
 
 class BuiltIns:
@@ -25,6 +25,7 @@ class BuiltIns:
 
     # BASIC OPS
 
+    env.set(symbol_table.get("vm-type"), VM_Function(vm_type_code))
     env.set(symbol_table.get("set!"), VM_Macro(vm_set_bang))
     env.set(symbol_table.get("quote"), VM_Macro(vm_quote))
     env.set(symbol_table.get("length"), VM_Function(vm_length))
@@ -38,16 +39,30 @@ class BuiltIns:
 
     # MISC
 
+def require_exact_arg_number(expected, actual):
+  if actual != expected:
+    raise Exception("%d args found where %d expected" %
+      (actual, expected))
+
+def require_min_arg_number(expected, actual):
+  if actual < expected:
+    raise Exception("%d args found where at least %d expected" %
+      (actual, expected))
+
+def require_type(obj, type):
+  if not isinstance(obj, type):
+    raise Exception("%s is not of type %s" % (obj.vm_str(), type))
+
+def vm_type_code(args, env):
+  require_exact_arg_number(1, num_items(args))
+  return VM_Str(args.left().vm_type())
+
 def vm_quote(args, env):
-  len = num_items(args)
-  if len != 1:
-    raise Exception("%d args found where 1 expected" % len)
+  require_exact_arg_number(1, num_items(args))
   return args.left()
 
 def vm_length(args, env):
-  len = num_items(args)
-  if len != 1:
-    raise Exception("%d args found where 1 expected" % len)
+  require_exact_arg_number(1, num_items(args))
   return VM_Int(num_items(args.left()))
 
 def num_items(args):
@@ -60,15 +75,11 @@ def num_items(args):
   return len
 
 def vm_set_bang(args, env):
-  if not isinstance(env, Environment):
-    raise Exception("%s is not an Environment" % env.vm_str())
-  len = num_items(args)
-  if len != 2:
-    raise Exception("%d args found where 2 expected" % len)
+  require_type(env, Environment)
+  require_exact_arg_number(2, num_items(args))
   sym = args.left()
   val = args.right().left().vm_eval(env)
-  if sym.vm_type() != 'Y':
-    raise Exception("%s is not a symbol" % sym.vm_str())
+  require_type(sym, VM_Sym)
   env.set(sym, val)
   return val
 
@@ -80,8 +91,7 @@ def as_num(obj):
   raise Exception("%s is not a number" % obj.env_str())
 
 def vm_plus(args, env):
-  if not isinstance(env, Environment):
-    raise Exception("%s is not an Environment" % env.vm_str())
+  require_type(env, Environment)
   sum = 0
   is_float = False
   while args.vm_type() != 'N':
@@ -93,11 +103,8 @@ def vm_plus(args, env):
   return VM_Real(sum) if is_float else VM_Int(sum)
 
 def vm_minus(args, env):
-  if not isinstance(env, Environment):
-    raise Exception("%s is not an Environment" % env.vm_str())
-  len = num_items(args)
-  if len < 1:
-    raise Exception("%d args found where at least 1 expected" % len)
+  require_type(env, Environment)
+  require_min_arg_number(1, num_items(args))
   is_float = False
   val = args.left()
   sum = as_num(val)
@@ -113,8 +120,7 @@ def vm_minus(args, env):
   return VM_Real(sum) if is_float else VM_Int(sum)
 
 def vm_times(args, env):
-  if not isinstance(env, Environment):
-    raise Exception("%s is not an Environment" % env.vm_str())
+  require_type(env, Environment)
   product = 1
   is_float = False
   while args.vm_type() != 'N':
