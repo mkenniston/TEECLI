@@ -8,7 +8,7 @@
 # to expressions.
 
 import sys
-from VM_Types import VM_Nil, VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Pair
+from VMTypes import VM_Nil, VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Pair
 
 class Reader:
 

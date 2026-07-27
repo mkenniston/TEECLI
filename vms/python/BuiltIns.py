@@ -6,7 +6,7 @@
 
 # This function populates all the built-in functions and values.
 
-from VM_Types import VM_Bool, VM_Int, VM_Real, VM_Macro, VM_Function
+from VMTypes import VM_Bool, VM_Int, VM_Real, VM_Macro, VM_Function
 from Environment import Environment
 
 class BuiltIns:

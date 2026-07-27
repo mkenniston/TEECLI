@@ -7,7 +7,7 @@
 # Implement a Symbol Table, which contains only the name and sid of
 # each symbol.
 
-from VM_Types import VM_Sym
+from VMTypes import VM_Sym
 
 class SymbolTable:
 
