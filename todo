@@ -73,4 +73,5 @@ DONE:
 - added newline in .ese output from compiler, to make it easier to debug
 - added copyright/license block to every source file (and the Manual)
 - added more material to the Manual
+- cleaned up names, changed VM to VirtualMachine
 

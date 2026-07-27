@@ -9,5 +9,5 @@ if ! ruff check; then
 fi
 cat tools/runtimes.ebs tools/framework.ebs \
     | racket -t tools/compiler.rkt \
-    | targets/Python/runner.py
+    | targets/Python/VirtualMachine.py
 
