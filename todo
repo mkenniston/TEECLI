@@ -86,4 +86,5 @@ DONE:
 - cleaned up names, changed VM to VirtualMachine
 - changed targets/ to vms/
 - added (vm-type)
+- cleaned up VMType names
 

@@ -24,7 +24,7 @@
 #	Y: sYmbol
 #
 
-class VM_Nil():
+class VMNil():
 
   def __init__(self):
     pass
@@ -38,7 +38,7 @@ class VM_Nil():
   def vm_eval(self, env):
     return self
 
-class VM_Bool():
+class VMBoolean():
 
   def __init__(self, value):
     if not isinstance(value, bool):
@@ -57,7 +57,7 @@ class VM_Bool():
   def vm_eval(self, env):
     return self
 
-class VM_Int():
+class VMInteger():
 
   def __init__(self, value):
     if not isinstance(value, int):
@@ -76,7 +76,7 @@ class VM_Int():
   def vm_eval(self, env):
     return self
 
-class VM_Real():
+class VMReal():
 
   def __init__(self, value):
     if not isinstance(value, float):
@@ -95,7 +95,7 @@ class VM_Real():
   def vm_eval(self, env):
     return self
 
-class VM_Str():
+class VMString():
   def __init__(self, value):
      self._str_val = str(value)
 
@@ -111,7 +111,7 @@ class VM_Str():
   def vm_eval(self, env):
     return self
 
-class VM_Sym():
+class VMSymbol():
   def __init__(self, name, sid):
     self._name = name
     self._sid = sid
@@ -131,7 +131,7 @@ class VM_Sym():
   def vm_eval(self, env):
     return env.get(self)
 
-class VM_Pair():
+class VMPair():
   def __init__(self, left, right):
     self._left = left
     self._right = right
@@ -150,9 +150,9 @@ class VM_Pair():
 
   def _tail_str(self):
     tail = self._right
-    if isinstance(tail, VM_Nil):
+    if isinstance(tail, VMNil):
       return " )"
-    if isinstance(tail, VM_Pair):
+    if isinstance(tail, VMPair):
       return " " + tail._left.vm_str() + tail._tail_str()
     return " . " + tail.vm_str() + " )"
 
@@ -170,10 +170,10 @@ class VM_Pair():
     if tail.vm_type() == 'N':
       return tail
     if tail.vm_type() == 'P':
-      return VM_Pair(tail.left().vm_eval(env), tail._eval_list(tail.right(), env))
+      return VMPair(tail.left().vm_eval(env), tail._eval_list(tail.right(), env))
     raise Exception("arg list is not a list")
 
-class VM_Macro():
+class VMMacro():
 
   def __init__(self, macro):
     self._macro = macro
@@ -190,7 +190,7 @@ class VM_Macro():
   def vm_eval(self, args, env):
     raise Exception("cannot eval a bare macro without args")
 
-class VM_Function():
+class VMFunction():
 
   def __init__(self, function):
     self._function = function

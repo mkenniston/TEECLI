@@ -7,8 +7,9 @@
 # This class knows how to read ESE files and convert them
 # to expressions.
 
-import sys
-from VMTypes import VM_Nil, VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Pair
+from sys import stdin
+from VMTypes import \
+  VMNil, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMPair
 
 class Reader:
 
@@ -22,7 +23,7 @@ class Reader:
     # consume any leading whitespace
     char = " "
     while char and self.is_white_space(char):
-      char = sys.stdin.read(1)
+      char = stdin.read(1)
     # read one string of non-whitespace (unless quoted with \\)
     quoting = False
     token = ""
@@ -39,7 +40,7 @@ class Reader:
       else:
         token += char
         quoting = False
-      char = sys.stdin.read(1)
+      char = stdin.read(1)
 
   def read_one_expr(self):
     stack = []
@@ -59,10 +60,10 @@ class Reader:
           raise Exception("no pair to push")
         right = stack.pop()
         left = stack.pop()
-        stack.append(VM_Pair(left, right))
+        stack.append(VMPair(left, right))
         continue
       if token == "N":
-        stack.append(VM_Nil())
+        stack.append(VMNil())
         continue
 
       value = self.read_one_token()
@@ -70,14 +71,14 @@ class Reader:
         raise Exception("no value")
 
       if token == "B":
-        stack.append(VM_Bool(value == "#t"))
+        stack.append(VMBoolean(value == "#t"))
       if token == "I":
-        stack.append(VM_Int(int(value)))
+        stack.append(VMInteger(int(value)))
       elif token == "R":
-        stack.append(VM_Real(float(value)))
+        stack.append(VMReal(float(value)))
       elif token == "S":
-        stack.append(VM_Str(value))
+        stack.append(VMString(value))
       elif token == "Y":
         sid = self._symbol_table.get(value).sid()
-        stack.append(VM_Sym(value, sid))
+        stack.append(VMSymbol(value, sid))
 

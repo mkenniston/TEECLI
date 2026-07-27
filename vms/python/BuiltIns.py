@@ -6,7 +6,8 @@
 
 # This function populates all the built-in functions and values.
 
-from VMTypes import VM_Bool, VM_Int, VM_Real, VM_Str, VM_Sym, VM_Macro, VM_Function
+from VMTypes import \
+  VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMMacro, VMFunction
 from Environment import Environment
 
 class BuiltIns:
@@ -15,27 +16,27 @@ class BuiltIns:
 
     # BOOLEAN CONSTANTS
 
-    true_val = VM_Bool(True)
+    true_val = VMBoolean(True)
     env.set(symbol_table.get("#t"), true_val)
     env.set(symbol_table.get("True"), true_val)
 
-    false_val = VM_Bool(False)
+    false_val = VMBoolean(False)
     env.set(symbol_table.get("#f"), false_val)
     env.set(symbol_table.get("False"), false_val)
 
     # BASIC OPS
 
-    env.set(symbol_table.get("vm-type"), VM_Function(vm_type_code))
-    env.set(symbol_table.get("set!"), VM_Macro(vm_set_bang))
-    env.set(symbol_table.get("quote"), VM_Macro(vm_quote))
-    env.set(symbol_table.get("length"), VM_Function(vm_length))
+    env.set(symbol_table.get("vm-type"), VMFunction(vm_type_code))
+    env.set(symbol_table.get("set!"), VMMacro(vm_set_bang))
+    env.set(symbol_table.get("quote"), VMMacro(vm_quote))
+    env.set(symbol_table.get("length"), VMFunction(vm_length))
 
     # ARITHMETIC OPERATORS
 
-    env.set(symbol_table.get("pi"), VM_Real(3.1415926))
-    env.set(symbol_table.get("+"), VM_Function(vm_plus))
-    env.set(symbol_table.get("-"), VM_Function(vm_minus))
-    env.set(symbol_table.get("*"), VM_Function(vm_times))
+    env.set(symbol_table.get("pi"), VMReal(3.1415926))
+    env.set(symbol_table.get("+"), VMFunction(vm_plus))
+    env.set(symbol_table.get("-"), VMFunction(vm_minus))
+    env.set(symbol_table.get("*"), VMFunction(vm_times))
 
     # MISC
 
@@ -55,7 +56,7 @@ def require_type(obj, type):
 
 def vm_type_code(args, env):
   require_exact_arg_number(1, num_items(args))
-  return VM_Str(args.left().vm_type())
+  return VMString(args.left().vm_type())
 
 def vm_quote(args, env):
   require_exact_arg_number(1, num_items(args))
@@ -63,7 +64,7 @@ def vm_quote(args, env):
 
 def vm_length(args, env):
   require_exact_arg_number(1, num_items(args))
-  return VM_Int(num_items(args.left()))
+  return VMInteger(num_items(args.left()))
 
 def num_items(args):
   len = 0
@@ -79,7 +80,7 @@ def vm_set_bang(args, env):
   require_exact_arg_number(2, num_items(args))
   sym = args.left()
   val = args.right().left().vm_eval(env)
-  require_type(sym, VM_Sym)
+  require_type(sym, VMSymbol)
   env.set(sym, val)
   return val
 
@@ -100,7 +101,7 @@ def vm_plus(args, env):
     if val.vm_type() == 'F':
       is_float = True
     args = args.right()
-  return VM_Real(sum) if is_float else VM_Int(sum)
+  return VMReal(sum) if is_float else VMInteger(sum)
 
 def vm_minus(args, env):
   require_type(env, Environment)
@@ -117,7 +118,7 @@ def vm_minus(args, env):
     if val.vm_type() == 'F':
       is_float = True
     args = args.right()
-  return VM_Real(sum) if is_float else VM_Int(sum)
+  return VMReal(sum) if is_float else VMInteger(sum)
 
 def vm_times(args, env):
   require_type(env, Environment)
@@ -133,5 +134,5 @@ def vm_times(args, env):
     else:
       raise("%s is not a number in '*'" % val.vm_str())
     args = args.right()
-  return VM_Real(product) if is_float else VM_Int(product)
+  return VMReal(product) if is_float else VMInteger(product)
 

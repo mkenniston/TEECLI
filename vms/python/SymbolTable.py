@@ -7,7 +7,7 @@
 # Implement a Symbol Table, which contains only the name and sid of
 # each symbol.
 
-from VMTypes import VM_Sym
+from VMTypes import VMSymbol
 
 class SymbolTable:
 
@@ -17,6 +17,6 @@ class SymbolTable:
 
   def get(self, name):
     if name not in self._table:
-      self._table[name] = VM_Sym(name, self._next_id)
+      self._table[name] = VMSymbol(name, self._next_id)
       self._next_id += 1
     return self._table[name]
