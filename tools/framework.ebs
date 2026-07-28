@@ -24,3 +24,10 @@
 (list 'a '(b c))
 (list 'x 'y 'z)
 
+(if #t "yes" "no")
+(if #f "yes" "no")
+(cond
+  [#f "bad"]
+  [#f "worse"]
+  [else "ok"])
+

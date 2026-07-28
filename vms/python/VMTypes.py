@@ -43,7 +43,7 @@ class VMBoolean():
   def __init__(self, value):
     if not isinstance(value, bool):
       raise Exception('%s is not bool' % value)
-    self._bool_val = ("#t" if value else "#f")
+    self._bool_val = value
 
   def bool_val(self):
     return self._bool_val
@@ -52,7 +52,9 @@ class VMBoolean():
     return 'B'
 
   def vm_str(self):
-    return str(self._bool_val)
+    if self._bool_val:
+      return "#t"
+    return "#f"
 
   def vm_eval(self, env):
     return self

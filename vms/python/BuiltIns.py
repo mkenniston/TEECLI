@@ -38,17 +38,17 @@ class BuiltIns:
     #   - create a new environment, create the variable in that
     #     environment, and set its value
 
-    env.set(symbol_table.get("define"), VMMacro(bi_define))
-    env.set(symbol_table.get("set!"), VMMacro(bi_set_bang))
-
     env.set(symbol_table.get("vm-type"), VMFunction(bi_vm_type))
     env.set(symbol_table.get("quote"), VMMacro(bi_quote))
     env.set(symbol_table.get("length"), VMFunction(bi_length))
-
     env.set(symbol_table.get("cons"), VMFunction(bi_cons))
     env.set(symbol_table.get("car"), VMFunction(bi_car))
     env.set(symbol_table.get("cdr"), VMFunction(bi_cdr))
     env.set(symbol_table.get("list"), VMFunction(bi_list))
+    env.set(symbol_table.get("if"), VMMacro(bi_if))
+    env.set(symbol_table.get("cond"), VMMacro(bi_cond))
+    env.set(symbol_table.get("define"), VMMacro(bi_define))
+    env.set(symbol_table.get("set!"), VMMacro(bi_set_bang))
 
     # ARITHMETIC OPS
 
@@ -127,6 +127,34 @@ def bi_cdr(args, env):
 
 def bi_list(args, env):
   return args
+
+def bi_if(args, env):
+  require_exact_arg_number(3, num_items(args))
+  arg1 = args.left()
+  arg2 = args.right().left()
+  arg3 = args.right().right().left()
+  condition = arg1.vm_eval(env)
+  require_type(condition, VMBoolean)
+  if condition.bool_val():
+    return arg2.vm_eval(env)
+  return arg3.vm_eval(env)
+
+def bi_cond(args, env):
+  while args.vm_type() != 'N':
+    require_type(args, VMPair)
+    clause = args.left()
+    require_exact_arg_number(2, num_items(clause))
+    condition = clause.left()
+    if condition.vm_type() == 'Y' and condition.name() == "else":
+      condition = True
+    else:
+      condition = condition.vm_eval(env)
+      require_type(condition, VMBoolean)
+      condition = condition.bool_val()
+    if condition:
+      return clause.right().left().vm_eval(env)
+    args = args.right()
+  return
 
 def bi_define(args, env):
     # (define variable value)
