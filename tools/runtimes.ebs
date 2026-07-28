@@ -10,10 +10,12 @@
 (vm-type '(a b . c))
 (vm-type '(a b c))
 
+'(define pi 3.1415926535897932384626433)
+'(define e  2.7182818284590452353671352)
+
 "xyzzy"
 #f #t
 True False 
-pi
 (+)
 (+ 7)
 (+ 4  5)

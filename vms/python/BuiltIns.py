@@ -26,17 +26,16 @@ class BuiltIns:
 
     # BASIC OPS
 
-    env.set(symbol_table.get("vm-type"), VMFunction(vm_type_code))
-    env.set(symbol_table.get("set!"), VMMacro(vm_set_bang))
-    env.set(symbol_table.get("quote"), VMMacro(vm_quote))
-    env.set(symbol_table.get("length"), VMFunction(vm_length))
+    env.set(symbol_table.get("vm-type"), VMFunction(bi_vm_type))
+    env.set(symbol_table.get("set!"), VMMacro(bi_set_bang))
+    env.set(symbol_table.get("quote"), VMMacro(bi_quote))
+    env.set(symbol_table.get("length"), VMFunction(bi_length))
 
-    # ARITHMETIC OPERATORS
+    # ARITHMETIC OPS
 
-    env.set(symbol_table.get("pi"), VMReal(3.1415926))
-    env.set(symbol_table.get("+"), VMFunction(vm_plus))
-    env.set(symbol_table.get("-"), VMFunction(vm_minus))
-    env.set(symbol_table.get("*"), VMFunction(vm_times))
+    env.set(symbol_table.get("+"), VMFunction(bi_plus))
+    env.set(symbol_table.get("-"), VMFunction(bi_minus))
+    env.set(symbol_table.get("*"), VMFunction(bi_times))
 
     # MISC
 
@@ -54,15 +53,15 @@ def require_type(obj, type):
   if not isinstance(obj, type):
     raise Exception("%s is not of type %s" % (obj.vm_str(), type))
 
-def vm_type_code(args, env):
+def bi_vm_type(args, env):
   require_exact_arg_number(1, num_items(args))
   return VMString(args.left().vm_type())
 
-def vm_quote(args, env):
+def bi_quote(args, env):
   require_exact_arg_number(1, num_items(args))
   return args.left()
 
-def vm_length(args, env):
+def bi_length(args, env):
   require_exact_arg_number(1, num_items(args))
   return VMInteger(num_items(args.left()))
 
@@ -75,7 +74,7 @@ def num_items(args):
     args = args.right()
   return len
 
-def vm_set_bang(args, env):
+def bi_set_bang(args, env):
   require_type(env, Environment)
   require_exact_arg_number(2, num_items(args))
   sym = args.left()
@@ -91,7 +90,7 @@ def as_num(obj):
     return obj.real_val()
   raise Exception("%s is not a number" % obj.env_str())
 
-def vm_plus(args, env):
+def bi_plus(args, env):
   require_type(env, Environment)
   sum = 0
   is_float = False
@@ -103,7 +102,7 @@ def vm_plus(args, env):
     args = args.right()
   return VMReal(sum) if is_float else VMInteger(sum)
 
-def vm_minus(args, env):
+def bi_minus(args, env):
   require_type(env, Environment)
   require_min_arg_number(1, num_items(args))
   is_float = False
@@ -120,7 +119,7 @@ def vm_minus(args, env):
     args = args.right()
   return VMReal(sum) if is_float else VMInteger(sum)
 
-def vm_times(args, env):
+def bi_times(args, env):
   require_type(env, Environment)
   product = 1
   is_float = False
