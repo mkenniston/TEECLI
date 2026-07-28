@@ -1,11 +1,11 @@
 	TODO (Tasks)
 
 - add (if cond ex1 ex2) (if cond ex)
-- add (define sym ex)
 - add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
 
 - add (eval), (display exp ...) to builtins
 - add (lambda )
+- add  first second third
 
 - add (define-variadic new-name old-name empty-val)
 	e.g. (define-variadic '+ 'op-plus 0)
@@ -85,4 +85,6 @@ DONE:
 - added (vm-type)
 - cleaned up VMType names
 - added a simple, clean mechanism to link SUT to TEECLI
+- added (define), fixed (set!)
+- added cons, car, cdr, list
 

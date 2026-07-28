@@ -10,8 +10,12 @@
 (vm-type '(a b . c))
 (vm-type '(a b c))
 
-'(define pi 3.1415926535897932384626433)
-'(define e  2.7182818284590452353671352)
+(define pi 3.1415926535897932384626433)
+(define e  2.7182818284590452353671352)
+(define dogs '(rover spot fido))
+
+pi
+e
 
 "xyzzy"
 #f #t
@@ -20,12 +24,17 @@ True False
 (+ 7)
 (+ 4  5)
 (+ 100 50 7)
-(set! a quote)
+(define a ())
+(set! a 'quote)
 a
 (quote 23)
 (quote x)
+(define b 0)
+(define d 1)
+(define e pi)
 (set! b "banana")
 (set! d "dates")
 (set! e "eggplant")
-'(a b (d . e))
+'(list a b (d . e))
+a
 

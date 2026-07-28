@@ -16,3 +16,11 @@
 '( "elephant" "fox" "gopher" )
 '( "horse" "ibex" "jackrabbit" . "Koala" )
 
+(define p (cons "foo" "bar"))
+(car p)
+(cdr p)
+(list)
+(list 'a)
+(list 'a '(b c))
+(list 'x 'y 'z)
+

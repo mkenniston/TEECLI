@@ -12,22 +12,21 @@ class Environment:
     self._parent = parent
     self._values = {}
 
-  def _find_env(self, sid):
+  def find_env(self, sid):
     if sid in self._values:
       return self
     if self._parent is None:
       return None
-    return self._parent._find_env(sid)
+    return self._parent.find_env(sid)
 
   def set(self, symbol, value):
     sid = symbol.sid()
-    env = self._find_env(sid) or self
-    env._values[sid] = value
+    self._values[sid] = value
     return value
 
   def get(self, symbol):
     sid = symbol.sid()
-    env = self._find_env(sid)
+    env = self.find_env(sid)
     if env is None:
       raise Exception("%s: undefined" % symbol.vm_str())
     return self._values[sid]
