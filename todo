@@ -28,9 +28,6 @@
 - research the most accepted/popular styles for each target language,
 	and set the flags appropriately on the de-linters
 - continue w/Architecture section of the Manual
-- figure out how to cleanly separate the TEECLI code for each VM, the
-	language-specific adapters for each SUT, and the EBS test suites
-	(including TEECLI self-tests)
 
 - add "make" where appropriate, and add to tool-chain (verify)
 - figure out how exceptions/call/cc works
@@ -87,4 +84,5 @@ DONE:
 - changed targets/ to vms/
 - added (vm-type)
 - cleaned up VMType names
+- added a simple, clean mechanism to link SUT to TEECLI
 

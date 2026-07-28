@@ -11,5 +11,5 @@ fi
 
 VM=$1
 echo "running: $VM"
-./vms/"$VM"/run.bash
+./vms/"$VM"/run_"$VM".bash
 

@@ -17,7 +17,7 @@
 # here because those can vary depending on which Linux distribution
 # and version you are running.
 
-ADMIN_TOOLS="bash git"
+ADMIN_TOOLS="git bash shellcheck"
 RACKET_TOOLS=racket
 PYTHON_TOOLS="python ruff"
 JAVASCRIPT_TOOLS=node
