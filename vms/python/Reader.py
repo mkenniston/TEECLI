@@ -9,7 +9,7 @@
 
 from sys import stdin
 from VMTypes import \
-  VMNil, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMPair
+  VMNull, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMPair
 
 class Reader:
 
@@ -63,7 +63,7 @@ class Reader:
         stack.append(VMPair(left, right))
         continue
       if token == "N":
-        stack.append(VMNil())
+        stack.append(VMNull())
         continue
 
       value = self.read_one_token()

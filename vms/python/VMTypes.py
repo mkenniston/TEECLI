@@ -10,27 +10,16 @@
 # We deliberately do not use inheritance here, in order to make it easier
 # to port this code to non-OO languages.
 #
-# The VM Types are:
-#
-#	B: Boolean
-#	E: not a type, but reserved for use by ESE
-#	F: Function (args are pre-evaluated)
-#	I: Integer
-#	N: Nil
-#	M: Macro (args are not pre-evaluated)
-#	P: Pair
-#	R: Real number (Floating point)
-#	S: String
-#	Y: sYmbol
-#
 
-class VMNil():
+class VMNull():
+
+  _type = None
 
   def __init__(self):
     pass
 
   def vm_type(self):
-    return 'N'
+    return VMNull._type
 
   def vm_str(self):
     return "()"
@@ -39,6 +28,8 @@ class VMNil():
     return self
 
 class VMBoolean():
+
+  _type = None
 
   def __init__(self, value):
     if not isinstance(value, bool):
@@ -49,7 +40,7 @@ class VMBoolean():
     return self._bool_val
 
   def vm_type(self):
-    return 'B'
+    return VMBoolean._type
 
   def vm_str(self):
     if self._bool_val:
@@ -61,13 +52,15 @@ class VMBoolean():
 
 class VMInteger():
 
+  _type = None
+
   def __init__(self, value):
     if not isinstance(value, int):
       raise Exception('%s is not integer' % value)
     self._int_val = value
 
   def vm_type(self):
-    return 'I'
+    return VMInteger._type 
 
   def int_val(self):
     return self._int_val
@@ -80,13 +73,15 @@ class VMInteger():
 
 class VMReal():
 
+  _type = None
+
   def __init__(self, value):
     if not isinstance(value, float):
       raise Exception('%s is not float' % value)
     self._real_val = value
 
   def vm_type(self):
-    return 'R'
+    return VMReal._type
 
   def real_val(self):
     return self._real_val
@@ -98,11 +93,14 @@ class VMReal():
     return self
 
 class VMString():
+
+  _type = None
+
   def __init__(self, value):
      self._str_val = str(value)
 
   def vm_type(self):
-    return 'S'
+    return VMString._type
 
   def str_val(self):
     return self._str_val
@@ -114,12 +112,15 @@ class VMString():
     return self
 
 class VMSymbol():
+
+  _type = None
+
   def __init__(self, name, sid):
     self._name = name
     self._sid = sid
 
   def vm_type(self):
-    return 'Y'
+    return VMSymbol._type
 
   def name(self):
     return self._name
@@ -134,6 +135,9 @@ class VMSymbol():
     return env.get(self)
 
 class VMPair():
+
+  _type = None
+
   def __init__(self, left, right):
     self._left = left
     self._right = right
@@ -145,37 +149,39 @@ class VMPair():
     return self._right
 
   def vm_type(self):
-    return 'P'
+    return VMPair._type
 
   def vm_str(self):
     return "( " + self._left.vm_str() + self._tail_str()
 
   def _tail_str(self):
     tail = self._right
-    if isinstance(tail, VMNil):
+    if tail.vm_type() == VMNull._type:
       return " )"
-    if isinstance(tail, VMPair):
+    if tail.vm_type() == VMPair._type:
       return " " + tail._left.vm_str() + tail._tail_str()
     return " . " + tail.vm_str() + " )"
 
   def vm_eval(self, env):
     action = self._left.vm_eval(env)
-    if action.vm_type() == 'M':
+    if action.vm_type() == VMMacro._type:
       args = self._right
       return action.macro()(args, env)
-    if action.vm_type() == 'F':
+    if action.vm_type() == VMFunction._type:
       args = self._eval_list(self._right, env)
       return action.function()(args, env)
     raise Exception("not executable: %s" % action.vm_str())
 
   def _eval_list(self, tail, env):
-    if tail.vm_type() == 'N':
+    if tail.vm_type() == VMNull._type:
       return tail
-    if tail.vm_type() == 'P':
+    if tail.vm_type() == VMPair._type:
       return VMPair(tail.left().vm_eval(env), tail._eval_list(tail.right(), env))
     raise Exception("arg list is not a list")
 
 class VMMacro():
+
+  _type = None
 
   def __init__(self, macro):
     self._macro = macro
@@ -184,7 +190,7 @@ class VMMacro():
     return self._macro
 
   def vm_type(self):
-    return 'M'
+    return VMMacro._type
 
   def vm_str(self):
     return str(self._macro)
@@ -194,6 +200,8 @@ class VMMacro():
 
 class VMFunction():
 
+  _type = None
+
   def __init__(self, function):
     self._function = function
 
@@ -201,7 +209,7 @@ class VMFunction():
     return self._function
 
   def vm_type(self):
-    return 'F'
+    return VMFunction._type
 
   def vm_str(self):
     return str(self._function)

@@ -30,4 +30,6 @@
   [#f "bad"]
   [#f "worse"]
   [else "ok"])
+(list vm-null vm-boolean vm-integer vm-real vm-string vm-symbol
+  vm-pair vm-macro vm-function)
 

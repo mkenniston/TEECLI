@@ -7,13 +7,47 @@
 # This function populates all the built-in functions and values.
 
 from VMTypes import \
-  VMPair, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, \
+  VMNull, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMPair, \
   VMMacro, VMFunction
 from Environment import Environment
+
+vm_null = None
+vm_boolean = None
+vm_integer = None
+vm_real = None
+vm_string = None
+vm_symbol = None
+vm_pair = None
+vm_macro = None
+vm_function = None
 
 class BuiltIns:
 
   def populate(self, symbol_table, env):
+
+    # FUNDAMENTAL TYPES
+
+    global vm_null, vm_boolean, vm_integer, vm_real, vm_string, vm_symbol, \
+      vm_pair, vm_macro, vm_function
+
+    vm_null = symbol_table.get("vm-null")
+    VMNull._type = env.set(vm_null, vm_null)
+    vm_boolean = symbol_table.get("vm-boolean")
+    VMBoolean._type = env.set(vm_boolean, vm_boolean)
+    vm_integer = symbol_table.get("vm-integer")
+    VMInteger._type = env.set(vm_integer, vm_integer)
+    vm_real = symbol_table.get("vm-real")
+    VMReal._type = env.set(vm_real, vm_real)
+    vm_string = symbol_table.get("vm-string")
+    VMString._type = env.set(vm_string, vm_string)
+    vm_symbol = symbol_table.get("vm-symbol")
+    VMSymbol._type = env.set(vm_symbol, vm_symbol)
+    vm_pair = symbol_table.get("vm-pair")
+    VMPair._type = env.set(vm_pair, vm_pair)
+    vm_macro = symbol_table.get("vm-macro")
+    VMMacro._type = env.set(vm_macro, vm_macro)
+    vm_function = symbol_table.get("vm-function")
+    VMFunction._type = env.set(vm_function, vm_function)
 
     # BOOLEAN CONSTANTS
 
@@ -76,17 +110,17 @@ def require_type(obj, type):
 
 def num_items(args):
   len = 0
-  while args.vm_type() != 'N':
-    if args.vm_type() != 'P':
+  while args.vm_type() != vm_null:
+    if args.vm_type() != vm_pair:
       raise Exception("cannot find length of non-list")
     len += 1
     args = args.right()
   return len
 
 def as_num(obj):
-  if obj.vm_type() == 'I':
+  if obj.vm_type() == vm_integer:
     return obj.int_val()
-  if obj.vm_type() == 'R':
+  if obj.vm_type() == vm_real:
     return obj.real_val()
   raise Exception("%s is not a number" % obj.env_str())
 
@@ -140,12 +174,12 @@ def bi_if(args, env):
   return arg3.vm_eval(env)
 
 def bi_cond(args, env):
-  while args.vm_type() != 'N':
+  while args.vm_type() != vm_null:
     require_type(args, VMPair)
     clause = args.left()
     require_exact_arg_number(2, num_items(clause))
     condition = clause.left()
-    if condition.vm_type() == 'Y' and condition.name() == "else":
+    if condition.vm_type() == vm_symbol and condition.name() == "else":
       condition = True
     else:
       condition = condition.vm_eval(env)
@@ -192,10 +226,10 @@ def bi_plus(args, env):
   require_type(env, Environment)
   sum = 0
   is_float = False
-  while args.vm_type() != 'N':
+  while args.vm_type() != vm_null:
     val = args.left()
     sum += as_num(val)
-    if val.vm_type() == 'F':
+    if val.vm_type() == vm_real:
       is_float = True
     args = args.right()
   return VMReal(sum) if is_float else VMInteger(sum)
@@ -206,13 +240,13 @@ def bi_minus(args, env):
   is_float = False
   val = args.left()
   sum = as_num(val)
-  if val.vm_type() == 'F':
+  if val.vm_type() == vm_real:
     is_float = True
   args = args.right()
-  while args.vm_type() != 'N':
+  while args.vm_type() != vm_null:
     val = args.left()
     sum -= as_num(val)
-    if val.vm_type() == 'F':
+    if val.vm_type() == vm_real:
       is_float = True
     args = args.right()
   return VMReal(sum) if is_float else VMInteger(sum)
@@ -221,11 +255,11 @@ def bi_times(args, env):
   require_type(env, Environment)
   product = 1
   is_float = False
-  while args.vm_type() != 'N':
+  while args.vm_type() != vm_null:
     val = args.left()
-    if val.vm_type() == 'I':
+    if val.vm_type() == vm_integer:
       product *= val.int_val()
-    elif val.vm_type() == 'F':
+    elif val.vm_type() == vm_real:
       product *= val.float_val()
       is_float = True
     else:

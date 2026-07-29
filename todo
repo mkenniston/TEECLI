@@ -1,9 +1,10 @@
 	TODO (Tasks)
 
-- add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
-
 - add (eval)
 - add (lambda )
+- add (let)
+
+- add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
 - add (first) (second) (third) (caadr etc.)
 - add (display exp ...)
 
@@ -15,15 +16,16 @@
 - add (and ...) (or ...) variadic macro w/ short-circuit eval
 - add (max ...) (min ...) (abs exp)
 - add (append item list) (prepend item list)
-- add (car exp) (cdr exp) (cons exp exp)
-- add (begin ) (let ) (list )
+- add (begin )
 - add (eq? ...) (equal? ..) variadic
 - add (string-xxx ) whole family of methods
 - add formatting for output (at the string level)
 
+- set "ruff" flakes to be as strict as "flake8" was
 - doc: clean up "ffi" vs. "adapter" terminology (in doc for now)
 - add adapter code for Python
 
+- what about dependency injection?  how does that even work with CLI?
 - make sure everything works with Unicode/UTF-8
 - research the most accepted/popular styles for each target language,
 	and set the flags appropriately on the de-linters
@@ -88,4 +90,5 @@ DONE:
 - added (define), fixed (set!)
 - added (cons) (car) (cdr) (list)
 - added (if) (cond)
+- changed vm-type codes from e.g. string "s" to symbol vm-string
 
