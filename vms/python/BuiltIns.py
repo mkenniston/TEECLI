@@ -92,6 +92,7 @@ class BuiltIns:
     env.set(symbol_table.get("eval"), VMFunction(bi_eval))
     env.set(symbol_table.get("let"), VMMacro(bi_let))
     env.set(symbol_table.get("let*"), VMMacro(bi_let_star))
+    env.set(symbol_table.get("display"), VMFunction(bi_display))
 
     # ARITHMETIC OPS
 
@@ -263,6 +264,11 @@ def bi_let(args, env):
 
 def bi_let_star(args, env):
   return both_lets(args, env, False)
+
+def bi_display(args, env):
+  require_exact_arg_number(1, num_items(args))
+  print(args.left().vm_str())
+  return vm_void
 
 def bi_plus(args, env):
   require_type(env, Environment)
