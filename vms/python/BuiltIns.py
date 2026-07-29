@@ -49,8 +49,11 @@ class BuiltIns:
     vm_function = symbol_table.get("vm-function")
     VMFunction._type = env.set(vm_function, vm_function)
 
-    # BOOLEAN CONSTANTS
+    # CONSTANTS
 
+    null = VMNull()
+    env.set(symbol_table.get("null"), null)
+    env.set(symbol_table.get("empty"),null)
     true_val = VMBoolean(True)
     env.set(symbol_table.get("#t"), true_val)
     env.set(symbol_table.get("True"), true_val)
@@ -83,6 +86,7 @@ class BuiltIns:
     env.set(symbol_table.get("cond"), VMMacro(bi_cond))
     env.set(symbol_table.get("define"), VMMacro(bi_define))
     env.set(symbol_table.get("set!"), VMMacro(bi_set_bang))
+    env.set(symbol_table.get("eval"), VMFunction(bi_eval))
 
     # ARITHMETIC OPS
 
@@ -221,6 +225,11 @@ def bi_set_bang(args, env):
     raise Exception("set! requires an existing variable")
   env.set(sym, val)
   return val
+
+def bi_eval(args, env):
+  require_exact_arg_number(1, num_items(args))
+  arg1 = args.left()
+  return arg1.vm_eval(env)
 
 def bi_plus(args, env):
   require_type(env, Environment)

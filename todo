@@ -1,8 +1,9 @@
 	TODO (Tasks)
 
-- add (eval)
 - add (lambda )
 - add (let)
+
+- add actual framework so it can finally self-test
 
 - add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
 - add (first) (second) (third) (caadr etc.)
@@ -91,4 +92,5 @@ DONE:
 - added (cons) (car) (cdr) (list)
 - added (if) (cond)
 - changed vm-type codes from e.g. string "s" to symbol vm-string
+- added (eval)
 

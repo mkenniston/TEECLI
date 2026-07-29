@@ -32,4 +32,12 @@
   [else "ok"])
 (list vm-null vm-boolean vm-integer vm-real vm-string vm-symbol
   vm-pair vm-macro vm-function)
+0
+'null
+null
+'empty
+empty
+(eval ''x)
+(eval '(+ 5 8 10))
+(eval (cons '+ '(5 8 9)))
 
