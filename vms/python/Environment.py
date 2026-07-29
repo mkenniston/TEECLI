@@ -29,5 +29,5 @@ class Environment:
     env = self.find_env(sid)
     if env is None:
       raise Exception("%s: undefined" % symbol.vm_str())
-    return self._values[sid]
+    return env._values[sid]
 

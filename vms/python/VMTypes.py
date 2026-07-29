@@ -11,6 +11,22 @@
 # to port this code to non-OO languages.
 #
 
+class VMVoid():
+
+  _type = None
+
+  def __init__(self):
+    pass
+
+  def vm_type(self):
+    return VMVoid._type
+
+  def vm_str(self):
+    return "#<void>"
+
+  def vm_eval(self, env):
+    return self
+
 class VMNull():
 
   _type = None

@@ -7,10 +7,11 @@
 # This function populates all the built-in functions and values.
 
 from VMTypes import \
-  VMNull, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, VMPair, \
-  VMMacro, VMFunction
+  VMVoid, VMNull, VMBoolean, VMInteger, VMReal, VMString, VMSymbol, \
+  VMPair, VMMacro, VMFunction
 from Environment import Environment
 
+vm_void = None
 vm_null = None
 vm_boolean = None
 vm_integer = None
@@ -27,9 +28,11 @@ class BuiltIns:
 
     # FUNDAMENTAL TYPES
 
-    global vm_null, vm_boolean, vm_integer, vm_real, vm_string, vm_symbol, \
-      vm_pair, vm_macro, vm_function
+    global vm_void, vm_null, vm_boolean, vm_integer, vm_real, \
+      vm_string, vm_symbol, vm_pair, vm_macro, vm_function
 
+    vm_void = symbol_table.get("vm-void")
+    VMVoid._type = env.set(vm_void, vm_void)
     vm_null = symbol_table.get("vm-null")
     VMNull._type = env.set(vm_null, vm_null)
     vm_boolean = symbol_table.get("vm-boolean")
@@ -87,6 +90,8 @@ class BuiltIns:
     env.set(symbol_table.get("define"), VMMacro(bi_define))
     env.set(symbol_table.get("set!"), VMMacro(bi_set_bang))
     env.set(symbol_table.get("eval"), VMFunction(bi_eval))
+    env.set(symbol_table.get("let"), VMMacro(bi_let))
+    env.set(symbol_table.get("let*"), VMMacro(bi_let_star))
 
     # ARITHMETIC OPS
 
@@ -192,7 +197,7 @@ def bi_cond(args, env):
     if condition:
       return clause.right().left().vm_eval(env)
     args = args.right()
-  return
+  return vm_void
 
 def bi_define(args, env):
     # (define variable value)
@@ -207,7 +212,7 @@ def bi_define(args, env):
   require_type(sym, VMSymbol)
   env = env.find_env(sym.sid()) or env
   env.set(sym, val)
-  return val
+  return vm_void
 
 def bi_set_bang(args, env):
     # (set! variable value)
@@ -224,12 +229,40 @@ def bi_set_bang(args, env):
   if env is None:
     raise Exception("set! requires an existing variable")
   env.set(sym, val)
-  return val
+  return vm_void
 
 def bi_eval(args, env):
   require_exact_arg_number(1, num_items(args))
   arg1 = args.left()
   return arg1.vm_eval(env)
+
+def both_lets(args, env, use_old):
+  require_min_arg_number(2, num_items(args))
+  new_env = Environment(env)
+  base_env = env if use_old else new_env
+  all_bindings = args.left()
+  args = args.right()
+  while all_bindings.vm_type() != vm_null:
+    require_type(all_bindings, VMPair)
+    binding = all_bindings.left()
+    require_exact_arg_number(2, num_items(binding))
+    var = binding.left()
+    val = binding.right().left().vm_eval(base_env)
+    new_env.set(var, val)
+    all_bindings = all_bindings.right()
+  result = vm_void
+  while args.vm_type() != vm_null:
+    require_type(args, VMPair)
+    expr = args.left()
+    result = expr.vm_eval(new_env)
+    args = args.right()
+  return result
+
+def bi_let(args, env):
+  return both_lets(args, env, True)
+
+def bi_let_star(args, env):
+  return both_lets(args, env, False)
 
 def bi_plus(args, env):
   require_type(env, Environment)

@@ -40,4 +40,10 @@ empty
 (eval ''x)
 (eval '(+ 5 8 10))
 (eval (cons '+ '(5 8 9)))
+(let () 4)
+(let ((a 1)) a)
+(let ((b 2) (c 3)) b c)
+(define w 100)
+(let ((w 7) (q (+ 1 w))) q)
+(let* ((w 7) (q (+ 1 w))) q)
 

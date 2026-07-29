@@ -1,13 +1,14 @@
 	TODO (Tasks)
 
 - add (lambda )
-- add (let)
 
 - add actual framework so it can finally self-test
 
+- add types char
 - add (pair?) (list?) (number?) (symbol?) (string?) (boolean?) (null?)
 - add (first) (second) (third) (caadr etc.)
 - add (display exp ...)
+- add (begin)
 
 - add (define-variadic new-name old-name empty-val)
 	e.g. (define-variadic '+ 'op-plus 0)
@@ -93,4 +94,5 @@ DONE:
 - added (if) (cond)
 - changed vm-type codes from e.g. string "s" to symbol vm-string
 - added (eval)
+- added (void) (let) (let*)
 
