@@ -49,7 +49,7 @@ class VMBoolean():
 
   def __init__(self, value):
     if not isinstance(value, bool):
-      raise Exception('%s is not bool' % value)
+      raise Exception('%s is not a bool' % value)
     self._bool_val = value
 
   def bool_val(self):
@@ -72,7 +72,7 @@ class VMInteger():
 
   def __init__(self, value):
     if not isinstance(value, int):
-      raise Exception('%s is not integer' % value)
+      raise Exception('%s is not an integer' % value)
     self._int_val = value
 
   def vm_type(self):
@@ -93,7 +93,7 @@ class VMReal():
 
   def __init__(self, value):
     if not isinstance(value, float):
-      raise Exception('%s is not float' % value)
+      raise Exception('%s is not a float' % value)
     self._real_val = value
 
   def vm_type(self):
@@ -113,7 +113,9 @@ class VMString():
   _type = None
 
   def __init__(self, value):
-     self._str_val = str(value)
+    if not isinstance(value, str):
+      raise Exception('%s is not a string' % value)
+    self._str_val = str(value)
 
   def vm_type(self):
     return VMString._type
@@ -132,6 +134,10 @@ class VMSymbol():
   _type = None
 
   def __init__(self, name, sid):
+    if not isinstance(name, str):
+      raise Exception('%s is not a string' % name)
+    if not isinstance(sid, int):
+      raise Exception('%s is not an integer' % sid)
     self._name = name
     self._sid = sid
 

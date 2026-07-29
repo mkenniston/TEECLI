@@ -104,19 +104,25 @@ class BuiltIns:
 
 # internal utility functions
 
-def require_exact_arg_number(expected, actual):
+def require_exact_num_items(expected, list):
+  actual = num_items(list)
   if actual != expected:
-    raise Exception("%d args found where %d expected" %
+    raise Exception("%d items found where %d expected" %
       (actual, expected))
 
-def require_min_arg_number(expected, actual):
+def require_min_num_items(expected, list):
+  actual = num_items(list)
   if actual < expected:
-    raise Exception("%d args found where at least %d expected" %
+    raise Exception("%d items found where at least %d expected" %
       (actual, expected))
 
 def require_type(obj, type):
-  if not isinstance(obj, type):
+  if obj.vm_type() != type:
     raise Exception("%s is not of type %s" % (obj.vm_str(), type))
+
+def require_env(obj):
+  if not isinstance(obj, Environment):
+    raise Exception("%s is not an Environment" % obj)
 
 def num_items(args):
   len = 0
@@ -137,63 +143,63 @@ def as_num(obj):
 # actual builtin implementations
 
 def bi_vm_type(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
-  return VMString(arg1.vm_type())
+  return arg1.vm_type()
 
 def bi_quote(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
   return arg1
 
 def bi_length(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
   return VMInteger(num_items(arg1))
 
 def bi_cons(args, env):
-  require_exact_arg_number(2, num_items(args))
+  require_exact_num_items(2, args)
   arg1 = args.left()
   arg2 = args.right().left()
   return VMPair(arg1, arg2)
 
 def bi_car(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
-  require_type(arg1, VMPair)
+  require_type(arg1, vm_pair)
   return arg1.left()
 
 def bi_cdr(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
-  require_type(arg1, VMPair)
+  require_type(arg1, vm_pair)
   return arg1.right()
 
 def bi_list(args, env):
   return args
 
 def bi_if(args, env):
-  require_exact_arg_number(3, num_items(args))
+  require_exact_num_items(3, args)
   arg1 = args.left()
   arg2 = args.right().left()
   arg3 = args.right().right().left()
   condition = arg1.vm_eval(env)
-  require_type(condition, VMBoolean)
+  require_type(condition, vm_boolean)
   if condition.bool_val():
     return arg2.vm_eval(env)
   return arg3.vm_eval(env)
 
 def bi_cond(args, env):
   while args.vm_type() != vm_null:
-    require_type(args, VMPair)
+    require_type(args, vm_pair)
     clause = args.left()
-    require_exact_arg_number(2, num_items(clause))
+    require_exact_num_items(2, clause)
     condition = clause.left()
     if condition.vm_type() == vm_symbol and condition.name() == "else":
       condition = True
     else:
       condition = condition.vm_eval(env)
-      require_type(condition, VMBoolean)
+      require_type(condition, vm_boolean)
       condition = condition.bool_val()
     if condition:
       return clause.right().left().vm_eval(env)
@@ -204,13 +210,13 @@ def bi_define(args, env):
     # (define variable value)
     #   - if the variable exists in the environment chain, set that one
     #   - else create the variable in the current environment, and set it
-  require_type(env, Environment)
-  require_exact_arg_number(2, num_items(args))
+  require_env(env)
+  require_exact_num_items(2, args)
   arg1 = args.left()
   arg2 = args.right().left()
   sym = arg1
   val = arg2.vm_eval(env)
-  require_type(sym, VMSymbol)
+  require_type(sym, vm_symbol)
   env = env.find_env(sym.sid()) or env
   env.set(sym, val)
   return vm_void
@@ -219,13 +225,13 @@ def bi_set_bang(args, env):
     # (set! variable value)
     #   - if the variable exists in the environment chain, set that one
     #   - else raise an exception
-  require_type(env, Environment)
-  require_exact_arg_number(2, num_items(args))
+  require_env(env)
+  require_exact_num_items(2, args)
   arg1 = args.left()
   arg2 = args.right().left()
   sym = arg1
   val = arg2.vm_eval(env)
-  require_type(sym, VMSymbol)
+  require_type(sym, vm_symbol)
   env = env.find_env(sym.sid())
   if env is None:
     raise Exception("set! requires an existing variable")
@@ -233,27 +239,27 @@ def bi_set_bang(args, env):
   return vm_void
 
 def bi_eval(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   arg1 = args.left()
   return arg1.vm_eval(env)
 
 def both_lets(args, env, use_old):
-  require_min_arg_number(2, num_items(args))
+  require_min_num_items(2, args)
   new_env = Environment(env)
   base_env = env if use_old else new_env
   all_bindings = args.left()
   args = args.right()
   while all_bindings.vm_type() != vm_null:
-    require_type(all_bindings, VMPair)
+    require_type(all_bindings, vm_pair)
     binding = all_bindings.left()
-    require_exact_arg_number(2, num_items(binding))
+    require_exact_num_items(2, binding)
     var = binding.left()
     val = binding.right().left().vm_eval(base_env)
     new_env.set(var, val)
     all_bindings = all_bindings.right()
   result = vm_void
   while args.vm_type() != vm_null:
-    require_type(args, VMPair)
+    require_type(args, vm_pair)
     expr = args.left()
     result = expr.vm_eval(new_env)
     args = args.right()
@@ -266,12 +272,12 @@ def bi_let_star(args, env):
   return both_lets(args, env, False)
 
 def bi_display(args, env):
-  require_exact_arg_number(1, num_items(args))
+  require_exact_num_items(1, args)
   print(args.left().vm_str())
   return vm_void
 
 def bi_plus(args, env):
-  require_type(env, Environment)
+  require_env(env)
   sum = 0
   is_float = False
   while args.vm_type() != vm_null:
@@ -283,8 +289,8 @@ def bi_plus(args, env):
   return VMReal(sum) if is_float else VMInteger(sum)
 
 def bi_minus(args, env):
-  require_type(env, Environment)
-  require_min_arg_number(1, num_items(args))
+  require_env(env)
+  require_min_num_items(1, args)
   is_float = False
   val = args.left()
   sum = as_num(val)
@@ -300,7 +306,7 @@ def bi_minus(args, env):
   return VMReal(sum) if is_float else VMInteger(sum)
 
 def bi_times(args, env):
-  require_type(env, Environment)
+  require_env(env)
   product = 1
   is_float = False
   while args.vm_type() != vm_null:
