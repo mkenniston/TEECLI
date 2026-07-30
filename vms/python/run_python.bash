@@ -20,7 +20,7 @@ fi
 
 TOOLS="$TEECLI_DIR"/tools
 VM="$TEECLI_DIR"/vms/python
-cat "$TOOLS"/runtimes.ebs \
+cat "$TOOLS"/runtime.ebs \
     "$TOOLS"/framework.ebs \
     "$VM"/python_specific.ebs \
     | racket -t "$TOOLS"/compiler.rkt \
