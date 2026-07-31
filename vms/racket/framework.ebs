@@ -1,0 +1,21 @@
+
+(define magic 0)
+(test-group "animals" (let ((magic 1))
+  (displayln "Hello")
+  (run-test "apple" magic expect 1)
+  (test-group "pet" (let ((magic 2))
+    (run-test "banana" magic expect 0)
+    (test-group "fido" (let ((magic 3))
+      (run-test "cherry" magic expect 0)
+    ))
+    (run-test "debut" magic expect 0)
+  ))
+  (test-group "wild" (let ((magic 4))
+    (run-test "eggplant" magic expect 0)
+  ))
+  (run-test "fruit" magic expect 0)
+  (displayln "Good-bye")
+))
+
+(run-test "fluffy"  5 expect 5)
+
